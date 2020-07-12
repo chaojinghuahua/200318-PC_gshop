@@ -1,28 +1,29 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+      <Header />
+      <router-view></router-view>
+      <Footer v-if="!$route.meta.isHideFooter" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Header from './components/Header'
+import Footer from './components/Footer'
+// 引入api接口函数
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  components:{
+    Header,
+    Footer
+  },
+  // 界面加载后的生命周期回调
+  // 测试拿数据
+//  async mounted() {
+//     const result = await reqBaseCategoryList()
+//     console.log(result);  
+//   },
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="less" rel="stylesheet/less" scoped>
 </style>
