@@ -11,8 +11,7 @@
    <!-- 猜你喜欢 -->
     <Like />
    <!--楼层-->
-    <Floor />
-    <Floor />
+    <Floor v-for="floor in floors" :key="floor.id" :floor="floor" />
    <!--商标-->
     <Brand />
 </div>
@@ -23,6 +22,8 @@
 // import components from './components'
 // 引入接口
 import {reqBanners,reqFloors} from '../../api'
+//  引入辅助函数
+import {mapState} from 'vuex'
 
   import ListContainer from './ListContainer/ListContainer'
   import TodayRecommend from './TodayRecommend/TodayRecommend'
@@ -41,6 +42,11 @@ export default {
     Brand,
     Rank,
     Floor,
+  },
+  computed: {
+    ...mapState({
+      floors:state => state.home.floors
+    })
   },
   /*
   测试mock数据是否拿到的代码

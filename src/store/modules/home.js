@@ -4,9 +4,9 @@ import { reqBaseCategoryList, reqBanners,reqFloors } from '@/api'
 export default {
   state:{
     // 三级分类信息状态数据
-    baseCategoryList:[],
-    banners:[],
-    floors:[]
+    baseCategoryList:[],   // 分类列表
+    banners:[],  // 广告轮播列表数据
+    floors:[]  // 楼层列表数据
   },
 
   mutations:{

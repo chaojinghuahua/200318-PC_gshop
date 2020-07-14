@@ -127,7 +127,7 @@
       }
     },
     mounted() {
-      // 提交对应的action
+      // 提交对应的action  优化代码，
       // this.$store.dispatch('getBaseCategoryList')
       // 当前组件加载完成之后，获取当前路由跳转是不是根路径
       if (this.$route.path !== '/') {

@@ -19,3 +19,8 @@ export const reqBaseCategoryList = () => ajax.get('/product/getBaseCategoryList'
 export const reqBanners = () => mockAjax.get('/banners')
 export const reqFloors = () => mockAjax.get('/floors')
 
+/*
+获取商品列表,搜索界面产品信息数据
+searchParams:包含所有需要传递的搜索请求参数的对象,里面可以使很多参数
+*/
+export const reqProductList = (searchParams) => ajax.post('/list',searchParams)

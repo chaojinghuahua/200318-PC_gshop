@@ -6,18 +6,23 @@ import App from './App.vue'
 import router from './router'
 // 引入store
 import store from './store'
-// 引入TypeNav
+// 引入TypeNav公共组件
 import TypeNav from './components/TypeNav'
-// 引入carouser
+// 引入carouser公共组件
 import Carousel from './components/Carousel'
+// 引入pagination公共组件
+import Pagination from './components/Pagination'
 // 引入mock
 import './mock/'
+// 引入swiper的样式
+import 'swiper/css/swiper.css'
 // 设置浏览器的控制台的默认提示信息是否显示
 Vue.config.productionTip = false
 
 // 注册全局组件(所有组件都可以使用了)
 Vue.component('TypeNav', TypeNav)
 Vue.component('Carousel', Carousel)
+Vue.component('Pagination', Pagination)
 
 
 new Vue({
