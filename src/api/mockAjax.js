@@ -26,7 +26,7 @@ import 'nprogress/nprogress.css'
 
 // 1、设置基础路径和超时时间
 const ajax = axios.create({
-  baseURL:'/api',
+  baseURL:'/mock',
   timeout:20000
 })
 

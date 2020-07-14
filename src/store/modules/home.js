@@ -1,19 +1,36 @@
 // 引入api接口函数
-import { reqBaseCategoryList } from '@/api'
+import { reqBaseCategoryList, reqBanners,reqFloors } from '@/api'
 
 export default {
   state:{
     // 三级分类信息状态数据
-    baseCategoryList:[]
+    baseCategoryList:[],
+    banners:[],
+    floors:[]
   },
+
   mutations:{
     // 直接修改三级分类状态数据
     RECEIVE_BASE_CATEGORY_LIST(state,baseCategoryList){
       state.baseCategoryList = baseCategoryList.splice(0,baseCategoryList.length-2)
-    }
+    },
+
+    // 直接修改轮播图数据
+    RECEIVE_BANNERS (state, banners) {
+      state.banners = banners
+    },
+
+    // 直接修改楼层数据
+    RECEIVE_FLOORS (state, floors) {
+      state.floors = floors
+    },
+    
   },
+
   actions:{
-    // 发送异步请求，获取三级分类信息状态数据
+    /* 
+      请求获取广告轮播列表的异步action
+    */
     async getBaseCategoryList ({commit}){
       // 调用api接口函数
       const result = await reqBaseCategoryList()
@@ -23,7 +40,33 @@ export default {
         // 触发mutation调用
         commit('RECEIVE_BASE_CATEGORY_LIST',baseCategoryList)
       }
+    },
+
+    /* 
+      请求获取楼层列表的异步action
+    */
+   async getBanners ({commit}){
+    //  调用api接口函数
+    const result = await reqBanners()
+    if(result.code === 200){
+      // 获取响应回来的状态数据
+      const banners = result.data
+      commit('RECEIVE_BANNERS',banners)
     }
+   },
+
+   /* 
+      请求获取楼层列表的异步action
+    */
+   async getFloors ({commit}){
+    // 调用api接口函数
+    const result = await reqFloors()
+    if(result.code === 200){
+      // 获取响应回来的状态数据
+      const floors = result.data
+      commit('RECEIVE_FLOORS',floors)
+    }
+   }
   },
   getters:{},
 }

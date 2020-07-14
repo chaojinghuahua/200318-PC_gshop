@@ -8,11 +8,16 @@ import router from './router'
 import store from './store'
 // 引入TypeNav
 import TypeNav from './components/TypeNav'
+// 引入carouser
+import Carousel from './components/Carousel'
+// 引入mock
+import './mock/'
 // 设置浏览器的控制台的默认提示信息是否显示
 Vue.config.productionTip = false
 
 // 注册全局组件(所有组件都可以使用了)
 Vue.component('TypeNav', TypeNav)
+Vue.component('Carousel', Carousel)
 
 
 new Vue({

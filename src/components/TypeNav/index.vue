@@ -1,42 +1,54 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
-      <div class="sort"  @mouseleave="currentIndex=-2">
-        <div class="all-sort-list2">
-          <div class="item"
-          v-for="(c1, index) in baseCategoryList" 
-          :key="c1.categoryId"
-          :class="{item_on:currentIndex===index}"
-          @mouseenter="currentIndex=index"
-          >
-            <h3>
-              <!-- <a href="">{{c1.categoryName}}</a> -->
-              <router-link :to="{path:'/search',query:{categoryName:c1.categoryName,categoryId:c1.categoryId}}">
-              {{c1.categoryName}}</router-link>
-            </h3>
-            <div class="item-list clearfix">
-              <div class="subitem">
-                <dl class="fore" v-for="(c2, index) in c1.categoryChild" 
-                :key="c2.categoryId">
-                  <dt>
-                    <!-- <a href="">{{c2.categoryName}}</a> -->
-                   <router-link :to="{path:'/search',query:{categoryName:c2.categoryName,categoryId:c2.categoryId}}">
-                   {{c2.categoryName}}</router-link>
-                  </dt>
-                  <dd>
-                    <em v-for="(c3, index) in c2.categoryChild" :key="c3.categoryChild">
-                      <!-- <a href="">{{c3.categoryName}}</a> -->
-                      <router-link :to="{path:'/search',query:{categoryName:c3.categoryName,categoryId:c3.categoryId}}">
-                      {{c3.categoryName}}</router-link>
-                    </em>
-                  </dd>
-                </dl>
+      <div @mouseenter="isShowFirst=true" @mouseleave="firstHide">
+          <h2 class="all">全部商品分类</h2>
+          <div class="sort"  @mouseleave="currentIndex=-2" @click="toSearch"  v-if="isShowFirst">
+            <div class="all-sort-list2">
+              <div class="item"
+              v-for="(c1, index) in baseCategoryList" 
+              :key="c1.categoryId"
+              :class="{item_on:currentIndex===index}"
+              @mouseenter="showSubCategory(index)"
+              >
+                <h3>
+                  <a href="javascript:;"
+                  :data-categoryName="c1.categoryName"
+                  :data-categoryId="c1.categoryId"
+                  >{{c1.categoryName}}</a>
+                  <!-- <router-link :to="{path:'/search',query:{categoryName:c1.categoryName,categoryId:c1.categoryId}}">
+                  {{c1.categoryName}}</router-link> -->
+                </h3>
+                <div class="item-list clearfix">
+                  <div class="subitem">
+                    <dl class="fore" v-for="(c2, index) in c1.categoryChild" 
+                    :key="c2.categoryId">
+                      <dt>
+                        <a href="javascript:;"
+                        :data-categoryName="c2.categoryName"
+                        :data-categoryId="c2.categoryId"
+                        >{{c2.categoryName}}</a>
+                      <!-- <router-link :to="{path:'/search',query:{categoryName:c2.categoryName,categoryId:c2.categoryId}}">
+                      {{c2.categoryName}}</router-link> -->
+                      </dt>
+                      <dd>
+                        <em v-for="(c3, index) in c2.categoryChild" :key="c3.categoryChild">
+                          <a href="javascript:;"
+                          :data-categoryName="c3.categoryName"
+                          :data-categoryId="c3.categoryId"
+                          >{{c3.categoryName}}</a>
+                          <!-- <router-link :to="{path:'/search',query:{categoryName:c3.categoryName,categoryId:c3.categoryId}}">
+                          {{c3.categoryName}}</router-link> -->
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
       </div>
+      
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -52,13 +64,18 @@
 </template>
 
 <script type="text/ecmascript-6">
+  // 引入lodash
+  // import _ from 'lodash'  // 全部引入lodash会
+  // 按需引入需要的函数即可
+  import throttle from 'lodash/throttle'  
   // 引入vuex的辅助函数
   import { mapState } from 'vuex'
   export default {
     name: 'TypeNav',
     data() {
       return {
-        currentIndex:-2  // 用来存储鼠标进入的时候的索引值
+        currentIndex:-2 , // 用来存储鼠标进入的时候的索引值
+        isShowFirst:true  // 默认当前分类列表是显示的
       }
     },
     computed: {
@@ -67,8 +84,56 @@
         baseCategoryList: state => state.home.baseCategoryList
       })
     },
+    methods: {
+     // 鼠标进入的事件:通过节流来实现
+      showSubCategory: throttle(function(index) {
+        this.currentIndex = index
+      }, 200),
+       // 通过事件委托的方式,来实现点击a标签进行跳转,并传参
+      toSearch(event){
+        // console.dir(event.target);
+        const target = event.target
+        if(target.nodeName==='A'){
+          // 解构需要的参数数据
+          const {
+            categoryname,
+            category1id,
+            category2id,
+            category3id
+          } = target.dataset
+          // 定义query对象用来存储路由需要传递的参数数据
+          const query = {
+          categoryName: categoryname,
+          }
+          if (category1id) {
+            query.category1Id = category1id
+          } else if (category2id) {
+            query.category2Id = category2id
+          } else if (category3id) {
+            query.category3Id = category3id
+          }
+
+          // 跳转界面,并传递参数数据
+          this.$router.push({ path:'/search',query})
+          this.currentIndex = -2
+          this.isShowFirst = false
+        }
+      },
+      // 鼠标离开事件，隐藏分类列表
+      firstHide(){
+        if (this.$route.path !== '/') {
+         this.isShowFirst = false
+        }
+      }
+    },
     mounted() {
-      this.$store.dispatch('getBaseCategoryList')
+      // 提交对应的action
+      // this.$store.dispatch('getBaseCategoryList')
+      // 当前组件加载完成之后，获取当前路由跳转是不是根路径
+      if (this.$route.path !== '/') {
+        // 只要不是首页中用到了TypeNav组件就隐藏分类列表
+        this.isShowFirst = false
+      }
     },
   }
 </script>

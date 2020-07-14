@@ -79,20 +79,35 @@
         // this.$router.push('/search').catch(()=>{console.log('出错了');})
 
         //6、重写push方法后在执行就不会报错
-        this.$router.push('/search')  
+        // this.$router.push('/search')  
 
         // 7、重写replace方法后在执行就不会报错
         // this.$router.replace('/search')
 
+
+
         // 编程式路由跳转进行传参
-        // (params没有参数也可以跳转，query参数传参)
+        // 1、(params方式，没有参数也可以跳转，query参数传参)
         // this.$router.push(`/search/${this.keyword}`)
 
-        // if(this.keyword){
-        //   this.$router.push({name:'search',params:{keyword:this.keyword}})
-        // }else{
-        //    this.$router.push({name:'search'})
-        // }
+        // 2、编程式路由query方式传参
+        // this.$router.push(`/search?keyword=${this.keyword}`)
+
+        // 编程式路由跳转或者声明式路由跳转,其实都可以  以对象的方式进行参数的传递
+        // 1.1、query的方式以对象的写法进行路由跳转的时候参数的传递
+        // this.$router.push({ path: '/search', query: { keyword: this.keyword } })
+        // this.$router.push({ name: 'search', query: { keyword: this.keyword } })
+      
+        // params的方式以对象的写法进行路由跳转的时候参数的传递(此时不能使用path)
+        // this.$router.push({ name: 'search', params: { keyword: this.keyword } })
+
+        
+        // 判断文本框中是否有输入的关键字
+        if(this.keyword){
+          this.$router.push({name:'search',params:{keyword:this.keyword}})
+        }else{
+           this.$router.push({name:'search'})
+        }
 
 
       }

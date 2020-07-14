@@ -22,6 +22,9 @@ export default {
 //     const result = await reqBaseCategoryList()
 //     console.log(result);  
 //   },
+mounted() {
+  this.$store.dispatch('getBaseCategoryList')
+},
 }
 </script>
 

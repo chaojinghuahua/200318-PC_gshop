@@ -11,9 +11,12 @@ export default [
     component:Home
   },
   {
-    path:'/search/:keyword?',
+    // params方式传参
+    // path:'/search/:keyword?',  // ?代表可传值，可不传，有没有都可以跳转
+    // query方式传参
+    path:'/search',
     component:Search,
-    name:'search'
+    name:'search' //params的方式以对象的写法进行路由跳转的时候参数的传递需要name
   },
   {
     path:'/login',
