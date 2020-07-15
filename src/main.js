@@ -26,6 +26,12 @@ Vue.component('Pagination', Pagination)
 
 
 new Vue({
+  // 初始化之前的生命周期回调
+  beforeCreate() {
+    // 定义一个事件总线的属性
+    Vue.prototype.$bus = new Vue()
+  },
+  // 渲染组件
   render: h => h(App),
   router,
   store

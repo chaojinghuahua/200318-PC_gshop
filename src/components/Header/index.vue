@@ -52,16 +52,16 @@
     name: 'Header',
     data() {
       return {
-        keyword:''
+        keyword: ''
       }
     },
     methods: {
       // 点击跳转到search界面
-      toSearch(){
+      toSearch() {
         // this.$router.push('/search') 
         // const result = this.$router.push('/search')
         // console.log(result);  // 返回的是一个promise对象
-        
+
         // *******查看官方文档，编程式路由跳转转解决问题************
         // 1、传入一个空的成功的回调，重复点击不会报错
         //  this.$router.push('/search',()=>{console.log('跳转了');})
@@ -97,20 +97,70 @@
         // 1.1、query的方式以对象的写法进行路由跳转的时候参数的传递
         // this.$router.push({ path: '/search', query: { keyword: this.keyword } })
         // this.$router.push({ name: 'search', query: { keyword: this.keyword } })
-      
+
         // params的方式以对象的写法进行路由跳转的时候参数的传递(此时不能使用path)
         // this.$router.push({ name: 'search', params: { keyword: this.keyword } })
 
-        
+
         // 判断文本框中是否有输入的关键字
-        if(this.keyword){
-          this.$router.push({name:'search',params:{keyword:this.keyword}})
-        }else{
-           this.$router.push({name:'search'})
+        //   if (this.keyword) {
+        //     this.$router.push({
+        //       name: 'search',
+        //       params: {
+        //         keyword: this.keyword
+        //       }
+        //     })
+        //   } else {
+        //     this.$router.push({
+        //       name: 'search'
+        //     })
+        //   }
+        // }
+
+        // 获取query参数及当前的地址
+        const {query,path} = this.$route
+        // 判断文本框中是否有输入的关键字
+        if (this.keyword) {
+          // 判断当前的路径是否包含'/search'
+          if (path.indexOf('/search') === 0) {
+            this.$router.push({
+              name: 'search',
+              params: {
+                keyword: this.keyword
+              },
+              query
+            })
+          } else {
+            // 说明此时文本框有关键字,但是没有在search界面,所以,正常的跳转,并且携带params参数即可
+            this.$router.push({
+              name: 'search',
+              params: {
+                keyword: this.keyword
+              }
+            })
+          }
+        } else {
+          // 此时文本框中没有搜索关键
+          // 判断当前的路径是否包含'/search'
+          if (path.indexOf('/search') === 0) {
+            // 没有关键字,又在search界面,那么点击按钮,依然需要携带query参数
+            this.$router.push({
+              name: 'search',
+              query
+            })
+          } else {
+            // 没有关键字,也没有在search界面,那就正常的跳转即可
+            this.$router.push({name: 'search' })
+          }
         }
-
-
       }
+    },
+
+    mounted() {
+      // 绑定一个事件
+      this.$bus.$on('removeKeyword',()=>{
+        this.keyword = ''
+      })
     },
   }
 </script>
