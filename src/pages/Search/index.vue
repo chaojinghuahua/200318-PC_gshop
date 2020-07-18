@@ -68,12 +68,15 @@
           <!-- 分页列表 -->
           <div class="goods-list">
             <ul class="yui3-g">
-              <li class="yui3-u-1-5" v-for="(goods, index) in goodsList" :key="goods.id">
+              <li class="yui3-u-1-5" v-for="(goods,index) in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="javascript:;" >
+                    <!-- <a href="javascript:;">
                       <img :src="goods.defaultImg" />
-                    </a>
+                    </a>-->
+                    <router-link :to="{name:'detail',params:{skuId:goods.id}}">
+                      <img :src="goods.defaultImg" />
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -82,15 +85,20 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a  href="javascript" :title="goods.title">
-                      {{goods.title}}
-                    </a>
+                    <!-- <a href="javascript:;" :title="goods.title">{{goods.title}}</a> -->
+                    <router-link
+                      :title="goods.title"
+                      :to="{name:'detail',params:{skuId:goods.id}}"
+                    >{{goods.title}}</router-link>
                   </div>
                   <div class="commit">
-                    <i class="command">已有<span>2000</span>人评价</i>
+                    <i class="command">
+                      已有
+                      <span>2000</span>人评价
+                    </i>
                   </div>
                   <div class="operate">
-                    <a href="success-cart.html" target="_blank" class="sui-btn btn-bordered btn-danger">加入购物车</a>
+                    <a href="javascript:;" class="sui-btn btn-bordered btn-danger">加入购物车</a>
                     <a href="javascript:void(0);" class="sui-btn btn-bordered">收藏</a>
                   </div>
                 </div>
@@ -99,12 +107,9 @@
           </div>
 
           <!-- 分页 -->
-          <Pagination 
-            :currentPage="options.pageNo"
-            :pageSize="options.pageSize"
-            :total="productList.total"
-            :showPageNo="3"
-            @click="handleCurrentChange"
+         <Pagination
+            :pageConfig="{total:productList.total,showPageNo:5,pageNo:options.pageNo,pageSize:options.pageSize}"
+            @changeCurrentPage="getProductList"
           />
         </div>
       </div>
@@ -131,11 +136,11 @@
           keyword: '', // 搜索关键字
 
           props: [], // 商品属性的数组: ["平台属性ID:平台属性值:平台属性名"] ["2:6.0～6.24英寸:屏幕尺寸"]
-          trademark: '', // 品牌: "ID:品牌名称" "1:苹果"
+          // trademark: '', // 品牌: "ID:品牌名称" "1:苹果"
           order: '1:desc', // 排序方式  1: 综合,2: 价格 asc: 升序,desc: 降序  "1:desc"
 
           pageNo: 1, // 页码
-          pageSize: 5, //	每页数量
+          pageSize: 3, //	每页数量
         }
       }
     },
@@ -208,10 +213,13 @@
     
 
       // 监听当前页码改变的回调
-      handleCurrentChange(page){
-        // 点击某一页的时候，更新页码数据
-        this.options.pageNo = page
-      },
+      // changeCurrentPage(page){
+      //   // 点击某一页的时候，更新页码数据,
+      //   // 接收子组件Pagination传过来的数据
+      //   // this.options.pageNo = page   // 但是这样操作的还是第二页的数据
+        
+      //   this.getProductList(pageNo)
+      // },
       
       /*
          移除分类信息数据操作（要删除整个所有参数）
@@ -252,7 +260,8 @@
       */
      setTrademark(trademarkId,trademarkName){
       //  获取品牌的信息(id,name)
-      this.options.trademark = trademarkId + ':' + trademarkName
+      // this.options.trademark = trademarkId + ':' + trademarkName
+      this.$set(this.options,'trademark',trademarkId + ':' + trademarkName)
       // 重新获取商品信息数据
       this.getProductList()
      },
@@ -263,7 +272,8 @@
       */
      removeTrademark(){
       // 清空品牌信息数据
-      this.options.trademark = ''
+      // this.options.trademark = ''
+      this.$delete(this.options,'trademark')
       // 重新获取商品信息数据
       this.getProductList()
      },

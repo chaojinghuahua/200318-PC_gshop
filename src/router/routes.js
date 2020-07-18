@@ -1,7 +1,13 @@
+// 引入Home组件,
 import Home from '@/pages/Home'
-import Search from '@/pages/Search'
-import Login from '@/pages/Login'
+// 引入Register组件
 import Register from '@/pages/Register'
+// 引入Login组件
+import Login from '@/pages/Login'
+// 引入Search组件
+import Search from '@/pages/Search'
+// 引入Detail组件
+import Detail from '@/pages/Detail'
 
 // 注册路由并且暴露出去
 export default [
@@ -32,4 +38,15 @@ export default [
       isHideFooter:true
     }
   },
+  // Detail路由组件
+  {
+    path:'/detail/:skuId',
+    component:Detail,
+    name:'detail'
+  },
+  // 路由的重定向设置
+  {
+    path: '/',
+    redirect: '/'
+  }
 ]

@@ -12,4 +12,4 @@ import floors from './floors.json'
 // '/mock/banners'拦截的地址，根据前面的地址返回数据data:banners
 Mock.mock('/mock/banners',{code:200,data:banners})
 Mock.mock('/mock/floors',{code:200,data:floors})
-console.log('这里代码执行')
+// console.log('这里代码执行')
